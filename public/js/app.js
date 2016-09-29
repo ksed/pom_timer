@@ -4,11 +4,17 @@
   var startButton = $('#start');
   var seconds = $('#seconds');
   var minutes = $('#minutes');
+  var timerInterval;
 
   //main functionality
-  startButton.on('click', countdown);
+  startButton.on('click', startTimer);
 
   //function definitions
+  function startTimer() {
+    if (!timerInterval) {
+      timerInterval = setInterval(countdown, 1000);
+    }
+  }
   function countdown(){
     var secondsText = seconds.text();
     var secondsTextAsNumber = parseInt(secondsText);
@@ -34,7 +40,6 @@
     }
     // var secondsValue = parseInt(seconds.text());
     // seconds.text( pad( secondsValue - 1 ) );
-
   }
 
   function pad(num) {
