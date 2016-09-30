@@ -6,11 +6,23 @@
   var seconds = $('#seconds');
   var minutes = $('#minutes');
   var timerInterval;
+  var isOnBreak = false;
 
   //main functionality
   startButton.on('click', startTimer);
+  breakButton.on('click', startBreak);
 
   //function definitions
+  function startBreak() {
+    // set isOnBreak true
+    isOnBreak = true;
+    // set the minutes to 5 and seconds to 0
+    minutes.text('05');
+    seconds.text('00');
+    // hide the break button and start the timer
+    breakButton.hide();
+    startTimer();
+  }
   function startTimer() {
     if (!timerInterval) {
       timerInterval = setInterval(countdown, 1000);
@@ -22,12 +34,20 @@
     var minutesText = minutes.text();
     var minutesTextAsNumber = parseInt(minutesText);
     if (minutesTextAsNumber === 0 && secondsTextAsNumber === 0) {
-      // stop
+      // stop the timer and decide if isOnBreak or not what to show/hide
       clearInterval(timerInterval);
-      // disable the start button
-      startButton.attr('disabled', true);
-      //unhide the break button
-      breakButton.show();
+      timerInterval = null;
+      if (!isOnBreak) {
+        // disable the start button
+        startButton.attr('disabled', true);
+        //unhide the break button
+        breakButton.show();
+      } else {
+        isOnBreak = false;
+        startButton.attr('disabled', false);
+        minutes.text('25');
+        seconds.text('00');
+      }
       return;
     }
     if (secondsTextAsNumber === 0) {
